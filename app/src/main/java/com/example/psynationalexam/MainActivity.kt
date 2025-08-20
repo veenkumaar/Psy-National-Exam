@@ -18,6 +18,7 @@ import com.example.psynationalexam.ui.theme.PsyNationalExamTheme
 import androidx.compose.material3.Text
 import com.example.psynationalexam.ui.views.HomeScreen
 import com.example.psynationalexam.ui.views.LibraryScreen
+import com.example.psynationalexam.ui.views.NotificationScreen
 import com.example.psynationalexam.ui.views.ProfileScreen
 
 class MainActivity : ComponentActivity() {
@@ -35,9 +36,12 @@ class MainActivity : ComponentActivity() {
                         startDestination = BottomNavItem.Home.route,
                         modifier = Modifier.padding(innerPadding)
                     ) {
-                        composable(BottomNavItem.Home.route) { HomeScreen() }
+                        composable(BottomNavItem.Home.route) { HomeScreen(navController) }
                         composable(BottomNavItem.Library.route) { LibraryScreen() }
                         composable(BottomNavItem.Profile.route) { ProfileScreen() }
+                        composable(AppDestinations.NOTIFICATIONS_ROUTE) {
+                            NotificationScreen(onBack = { navController.popBackStack() })
+                        }
                     }
                 }
             }
@@ -56,10 +60,15 @@ fun MainPreview() {
                 startDestination = BottomNavItem.Home.route,
                 modifier = Modifier.padding(inner)
             ) {
-                composable(BottomNavItem.Home.route) { HomeScreen() }
+                composable(BottomNavItem.Home.route) { HomeScreen(navController) }
                 composable(BottomNavItem.Library.route) { LibraryScreen() }
                 composable(BottomNavItem.Profile.route) { ProfileScreen() }
             }
         }
     }
+}
+
+
+object AppDestinations {
+    const val NOTIFICATIONS_ROUTE = "notifications"
 }

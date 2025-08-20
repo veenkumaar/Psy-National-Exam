@@ -1,6 +1,6 @@
-
 package com.example.psynationalexam.ui.views
 
+import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -15,6 +15,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -22,20 +23,18 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.psynationalexam.R
-
-data class LibraryCourse(
-	val id: String,
-	val subject: String,
-	val title: String,
-	val progress: Float, // 0f..1f
-	val progressText: String,
-	val timeLeft: String,
-	val imageRes: Int? = null,
-	val isDiscuss: Boolean = false
-)
+import com.example.psynationalexam.model.LibraryCourse
 
 private val libraryCourses = listOf(
-	LibraryCourse("1","Biology","Bacterial Biology Overview",0.5f,"5/10 Chapter","5h 35m left", imageRes = R.drawable.illustration),
+	LibraryCourse(
+		"1",
+		"Biology",
+		"Bacterial Biology Overview",
+		0.5f,
+		"5/10 Chapter",
+		"5h 35m left",
+		imageRes = R.drawable.illustration
+	),
 	LibraryCourse("2","Biology","Metabolic Biochemistry for High School",0.7f,"5/10 Chapter","5h 35m left", imageRes = R.drawable.illustration2),
 	LibraryCourse("3","Biology","Mendelian Genetics & Mechanisms of Heredity",0.6f,"5/10 Chapter","5h 35m left", imageRes = R.drawable.illustration3),
 	LibraryCourse("4","Mathematics","High School Algebra I: Help and Review",0.5f,"5/10 Chapter","5h 35m left", imageRes = R.drawable.illustration3, isDiscuss = true),
@@ -59,6 +58,7 @@ fun LibraryScreen() {
 
 @Composable
 private fun LibraryCourseCard(course: LibraryCourse) {
+	val context = LocalContext.current
 	Row(
 		modifier = Modifier
 			.fillMaxWidth()
@@ -131,7 +131,7 @@ private fun LibraryCourseCard(course: LibraryCourse) {
 			Spacer(Modifier.height(12.dp))
 			Row {
 				OutlinedButton(
-					onClick = {},
+					onClick = { context.startActivity(Intent(context, CourseDetailsActivity::class.java)) },
 					modifier = Modifier.weight(1f),
 					shape = RoundedCornerShape(8.dp),
 					colors = ButtonDefaults.outlinedButtonColors(

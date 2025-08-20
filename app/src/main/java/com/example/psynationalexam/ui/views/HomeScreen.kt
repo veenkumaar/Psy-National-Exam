@@ -15,6 +15,7 @@ import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -26,30 +27,16 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.composed
+import androidx.navigation.NavHostController
+import com.example.psynationalexam.AppDestinations
+import com.example.psynationalexam.model.Course
+import com.example.psynationalexam.model.NewsItem
 
-// Simple data models
-data class Course(
-    val id: String,
-    val subject: String,
-    val title: String,
-    val lessons: Int,
-    val progress: Float, // 0f..1f
-    val duration: String,
-    val imageRes: Int? = null
-)
-
-data class NewsItem(
-    val id: String,
-    val category: String,
-    val title: String,
-    val time: String,
-    val views: Int,
-    val imageRes: Int? = null
-)
 
 private val recentCourses = listOf(
-    Course("1","Mathematics","High School Algebra I: Help and Review",12,0.5f,"12h 20m"),
+    Course("1", "Mathematics", "High School Algebra I: Help and Review", 12, 0.5f, "12h 20m"),
     Course("2","Mathematics","Enlargement to Trigonometry",10,0.2f,"8h 05m")
 )
 
@@ -60,12 +47,18 @@ private val recommendedCourses = listOf(
 )
 
 private val newsItems = listOf(
-    NewsItem("1","Biology","The Effects of Temperature on Enzyme Activity and Biology","1 hour ago",4795),
+    NewsItem(
+        "1",
+        "Biology",
+        "The Effects of Temperature on Enzyme Activity and Biology",
+        "1 hour ago",
+        4795
+    ),
     NewsItem("2","Mathematics","How to Work Out a Percentage Using a Calculator","24 August 2020",4795)
 )
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(navController: NavHostController) { // <-- Add NavController
     var selectedTab by remember { mutableStateOf(0) }
     val tabs = listOf("Recommended", "Algebra", "Geometry")
 
@@ -75,7 +68,7 @@ fun HomeScreen() {
             .background(Color.White),
         contentPadding = PaddingValues(bottom = 24.dp)
     ) {
-        item { GreetingHeader() }
+        item { GreetingHeader(navController = navController) } // <-- Pass NavController
         item { Spacer(Modifier.height(16.dp)) }
         item { RecentLearningSection(recentCourses) }
         item { Spacer(Modifier.height(24.dp)) }
@@ -88,8 +81,9 @@ fun HomeScreen() {
     }
 }
 
+
 @Composable
-private fun GreetingHeader() {
+private fun GreetingHeader(navController: NavHostController) { // <-- Add NavController
     Column(modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)) {
         Spacer(Modifier.height(8.dp))
         Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
@@ -98,17 +92,32 @@ private fun GreetingHeader() {
                 Spacer(Modifier.height(4.dp))
                 Text("What do you want to learn today?", fontSize = 14.sp, color = Color(0xFF9A9A9A))
             }
-            NotificationIcon()
+            NotificationIcon(navController = navController) // <-- Pass NavController
         }
         Spacer(Modifier.height(20.dp))
         SearchBar()
     }
 }
 
+
 @Composable
-private fun NotificationIcon() {
-    Box(modifier = Modifier.size(40.dp), contentAlignment = Alignment.TopEnd) {
-        Icon(imageVector = Icons.Default.Notifications, contentDescription = "Notifications", tint = Color(0xFF23223C), modifier = Modifier.size(28.dp).align(Alignment.Center))
+private fun NotificationIcon(navController: NavHostController) { // <-- Add NavController
+    Box(
+        modifier = Modifier
+            .size(40.dp)
+            .clickable { // <-- Add clickable modifier here
+                navController.navigate(AppDestinations.NOTIFICATIONS_ROUTE)
+            },
+        contentAlignment = Alignment.TopEnd
+    ) {
+        Icon(
+            imageVector = Icons.Default.Notifications,
+            contentDescription = "Notifications",
+            tint = Color(0xFF23223C),
+            modifier = Modifier
+                .size(28.dp)
+                .align(Alignment.Center)
+        )
         Box(
             modifier = Modifier
                 .size(10.dp)

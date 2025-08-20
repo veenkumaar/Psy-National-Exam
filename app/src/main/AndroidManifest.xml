@@ -38,6 +38,10 @@
             android:name=".ui.views.SignupActivity"
             android:exported="true"
             android:theme="@style/Theme.PsyNationalExam" />
+        <activity
+            android:name=".ui.views.CourseDetailsActivity"
+            android:exported="true"
+            android:theme="@style/Theme.PsyNationalExam" />
 
     </application>
 
