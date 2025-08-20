@@ -17,6 +17,8 @@ import com.example.psynationalexam.ui.common.BottomNavItem
 import com.example.psynationalexam.ui.theme.PsyNationalExamTheme
 import androidx.compose.material3.Text
 import com.example.psynationalexam.ui.views.HomeScreen
+import com.example.psynationalexam.ui.views.LibraryScreen
+import com.example.psynationalexam.ui.views.ProfileScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,12 +44,6 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-
-@Composable
-fun LibraryScreen() { /* TODO: Implement Library UI */ Text("Library") }
-
-@Composable
-fun ProfileScreen() { /* TODO: Implement Profile UI */ Text("Profile") }
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
